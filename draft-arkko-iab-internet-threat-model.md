@@ -1,7 +1,8 @@
 ---
-title: Changes in the Internet Thread Model
+title: Changes in the Internet Threat Model
 abbrev: Internet Threat Model
 docname: draft-arkko-iab-internet-threat-model
+updates: RFC3552, RFC7258
 date:
 category: info
 
@@ -32,7 +33,7 @@ informative:
 
 --- abstract
 
-
+blaa blaa tbd
 
 --- middle
 
@@ -92,4 +93,4 @@ We need a new model.
 
 # Acknowledgements
 
-The authors would like to thank John Mattsson, Mirja Kuehlewind, Alissa Cooper, Stephen Farrell, Eric Rescorla, Simone Ferlin, Kathleen Moriarty, and the IAB for interesting discussions in this problem space.
+The author would like to thank John Mattsson, Mirja Kuehlewind, Alissa Cooper, Stephen Farrell, Eric Rescorla, Simone Ferlin, Kathleen Moriarty, and the IAB for interesting discussions in this problem space.
