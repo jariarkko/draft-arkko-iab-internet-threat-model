@@ -17,13 +17,12 @@ diff:	draft-arkko-iab-internet-threat-model.txt
 	rfcdiff draft-arkko-iab-internet-threat-model-00.txt draft-arkko-iab-internet-threat-model.txt
 
 copycompile:
-	ssh jar@arkko.eu 'rm -rf draft-iab-internet-consolidation'
-	ssh jar@arkko.eu 'mkdir draft-iab-internet-consolidation'
-	scp -qrp * .??* jar@arkko.eu:draft-iab-internet-consolidation
-	ssh jar@arkko.eu 'cd draft-iab-internet-consolidation; make; make diff'
-	scp jar@arkko.eu:draft-iab-internet-consolidation/draft-arkko-iab-internet-threat-model.txt .
-	scp jar@arkko.eu:draft-iab-internet-consolidation/*.html .
+	ssh jar@arkko.eu 'rm -rf draft-arkko-iab-internet-threat-model'
+	ssh jar@arkko.eu 'mkdir draft-arkko-iab-internet-threat-model'
+	scp -qrp * .??* jar@arkko.eu:draft-arkko-iab-internet-threat-model
+	ssh jar@arkko.eu 'cd draft-arkko-iab-internet-threat-model; make; make diff'
+	scp jar@arkko.eu:draft-arkko-iab-internet-threat-model/draft-arkko-iab-internet-threat-model.txt .
+	scp jar@arkko.eu:draft-arkko-iab-internet-threat-model/*.html .
 	scp draft-arkko-iab-internet-threat-model.txt \
 		draft-arkko-iab-internet-threat-model.html \
-		draft-arkko-iab-internet-threat-model-from--00.diff.html \
 		jar@cloud1.arkko.eu:/var/www/www.arkko.com/html/ietf/iab
