@@ -1,7 +1,7 @@
 ---
 title: Changes in the Internet Threat Model
 abbrev: Internet Threat Model
-docname: draft-arkko-iab-internet-threat-model
+docname: draft-arkko-arch-internet-threat-model
 updates: RFC3552, RFC7258
 date:
 category: bcp
@@ -104,7 +104,7 @@ In many networks, the majority of traffic has flipped from cleartext to encrypte
 
 At the same time, technology developments and policy choices have driven the scope of cryptographic protection from protecting only the pure payload to protecting much of the rest, including far more header and meta-data information than was protected before. For instance, efforts are ongoing in the IETF to assist encrypting transport headers {{I-D.ietf-quic-transport}}, server domain name information in TLS {{I-D.ietf-tls-esni}}, and domain name queries {{RFC8484}}.
 
-The have also been iprovements to ensure that the security protocols that are in use actually have suitable credentials and that those credentials have not been compromised, see for instance, HSTS {{RFC6797}}, HPKP {{RFC7469}}, Expect-CT {{I-D.ietf-httpbis-expect-ct}}, and Let's Encrypt {{RFC8555}}.
+The have also been improvements to ensure that the security protocols that are in use actually have suitable credentials and that those credentials have not been compromised, see for instance, HSTS {{RFC6797}}, HPKP {{RFC7469}}, Expect-CT {{I-D.ietf-httpbis-expect-ct}}, and Let's Encrypt {{RFC8555}}.
 
 This is not to say that all problems in communications security have been resolved -- far from it. But the situation is definitely different from what it was a few years ago. Remaining issues will be and are worked on; the fight between defence and attack will also continue. Communications security will stay at the top of the agenda in any Internet technology development.
 
@@ -177,7 +177,9 @@ Note that it may well be that the easiest design approach is to send all informa
 
 As {{RFC3935}} says:
 
-   We embrace technical concepts such as decentralized control, edge-user empowerment and sharing of resources, because those concepts resonate with the core values of the IETF community.
+> We embrace technical concepts such as decentralized control,
+> edge-user empowerment and sharing of resources, because those
+> concepts resonate with the core values of the IETF community.
 
 To be more specific, this memo suggests the following guidelines for protocol designers:
 
@@ -245,4 +247,4 @@ To be filled in...
 
 # Acknowledgements
 
-The author would like to thank John Mattsson, Mirja Kuehlewind, Alissa Cooper, Stephen Farrell, Eric Rescorla, Simone Ferlin, Kathleen Moriarty, Brian Trammell, Mark Nottingham, Christian Huitema, Ted Hardie, and the IAB for interesting discussions in this problem space.
+The author would like to thank John Mattsson, Mirja Kuehlewind, Alissa Cooper, Stephen Farrell, Eric Rescorla, Simone Ferlin, Kathleen Moriarty, Brian Trammell, Mark Nottingham, Christian Huitema, Karl Norrman, Ted Hardie, and the IAB for interesting discussions in this problem space.
