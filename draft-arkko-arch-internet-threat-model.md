@@ -177,11 +177,15 @@ For instance, a transport connection between two components of a system is not a
 
 This memo also proposes to focus on the "need to know" aspect in systems. Information should not be disclosed, stored, or routed in cleartext through parties that do not absolutely need to have that information. 
 
-The proposed real end-to-end argument is as follows:
+The proposed argument about real ends and need to know is as follows:
 
-> Real end-to-end functions can best be realised by end-to-end
-> protocols. The role and authority of any additional parties
-> necessary to carry out a function should match their (sub)function.
+> Application functions are best realised by the entities directly
+> serving the users, and when multiple entities are involved, by
+> end-to-end protocols. The role and authority of any additional
+> entities necessary to carry out a function should match their
+> part of the function. No information or control roles should be
+> provided to these additional entities unless it is required by
+> the function they provide.
 
 For instance, a particular piece of information may be necessary for the actual other endpoint (such as message contents for another user)information . The same piece of information may not be necessary for any additional parties, unless the information had to do with, say, routing information for the message to reach the other user. When information is only needed by the actual other endpoint, it should be protected and be only relayed to the actual other endpoint. Protocol design should ensure that the additional parties do not have access to the information.
 
@@ -209,7 +213,7 @@ To be more specific, this memo suggests the following guidelines for protocol de
 
 ## Changes in RFC 3552 {#changes3552}
 
-This memo suggests that the following additional change be adopted in RFC 3552:
+This memo suggests that changes maybe necessary in RFC 3552. One initial, draft proposal for such changes would be this:
 
 OLD:
 
@@ -230,7 +234,7 @@ NEW:
 > a protocol become compromised or do not act in the best interests
 > the end-system implementing a protocol.
 
-In addition, the following new section should be added for the capabilities required to mount an attack:
+In addition, the following new section could be added to discuss the capabilities required to mount an attack:
 
 NEW:
 
@@ -243,7 +247,7 @@ NEW:
 
 ## Changes in RFC 7258 {#changes7258}
 
-This memo suggests that the following additional guideline be adopted in RFC 7258. This new text should be added after the 2nd paragraph in Section 2:
+This memo also suggests that additional guidelines may be necessary in RFC 7258. An initial, draft suggestion for starting point of those changes could be adding the following paragraph after the 2nd paragraph in Section 2:
 
 NEW:
 
