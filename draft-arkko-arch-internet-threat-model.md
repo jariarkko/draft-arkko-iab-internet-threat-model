@@ -2,15 +2,14 @@
 title: Changes in the Internet Threat Model
 abbrev: Internet Threat Model
 docname: draft-arkko-arch-internet-threat-model
-updates: RFC3552, RFC7258
 date:
-category: bcp
+category: info
 
 ipr: trust200902
 keyword: Internet-Draft
 
 stand_alone: yes
-pi: [sortrefs, symrefs]
+pi: [toc, sortrefs, symrefs]
 
 author:
   -
@@ -33,13 +32,14 @@ informative:
   RFC7817:
   RFC8446:
   RFC8484:
+  RFC8546:
   RFC8555:
-  BCP188:
   I-D.nottingham-for-the-users:
   I-D.ietf-tls-esni:
   I-D.ietf-quic-transport:
   I-D.ietf-httpbis-expect-ct:
   I-D.iab-wire-image:
+  I-D.farrell-etm:
   Saltzer:
    title: End-To-End Arguments in System Design
    author:
@@ -50,9 +50,11 @@ informative:
    
 --- abstract
 
-Communications security has been at the center of many security improvements in the Internet. The goal has been to ensure that communications are protected against outside observers and attackers. This memo suggests that the existing threat model, while important and still valid, is no longer alone sufficient to cater for the pressing security issues in the Internet. For instance, it is also necessary to protect the communications against endpoints that are compromised, malicous, or whose interests simply do not align with the interests of the users. While such protection is difficult, there are some measures that can be taken.
+Communications security has been at the center of many security improvements in the Internet. The goal has been to ensure that communications are protected against outside observers and attackers.
 
-It is particularly important to ensure that as we continue to develop Internet technology, non-communications security related threats are properly understood. This memo updates RFC 3552 and RFC 7258 to include proper consideration of non-communications security threats.
+This memo suggests that the existing threat model, while important and still valid, is no longer alone sufficient to cater for the pressing security issues in the Internet. For instance, it is also necessary to protect systems against endpoints that are compromised, malicious, or whose interests simply do not align with the interests of the users. While such protection is difficult, there are some measures that can be taken.
+
+It is particularly important to ensure that as we continue to develop Internet technology, non-communications security related threats are properly understood. While the consideration of these issues is relatively new in the IETF, this memo provides some initial ideas about potential broader threat models to consider when designing protocols for the Internet or when trying to defend against pervasive monitoring. Further down the road, updated threat models could result in changes in RFC 3552 (guidelines for writing security considerations) and RFC 7258 (pervasive monitoring), to include proper consideration of non-communications security threats. It may also be necessary to have dedicated guidance on how systems design and architecture affects security.
 
 --- middle
 
@@ -78,45 +80,51 @@ The purpose of a threat model is to outline what threats exist in order to assis
 
 However, the communications-security -only threat model is becoming outdated. This is due to three factors:
 
-* Advances in protecting most of our communications with strong cryptographic means. (And for things that this is not true yet, there typically are ongoing projects working on protecting them.)
+* Advances in protecting most of our communications with strong cryptographic means. This has resulted in much improved communications security, but also higlights the need for addressing other, remaining issues. This is not to say that communications security is not important, it still is: improvements are still needed. Not all communications have been protected, and even out of the already protected communications, not all of their aspects have been fully protected. Fortunately, there are ongoing projects working on improvements.
 
-* Adversaries increasing their pressure against other means, from compromising devics to legal coercion of centralized endpoints in conversations.
+* Adversaries have increased their pressure against other avenues of attack, from compromising devices to legal coercion of centralized endpoints in conversations.
 
-* New adversaries and risks have arisen, e.g., due to creation of large centralized information sources
+* New adversaries and risks have arisen, e.g., due to creation of large centralized information sources.
 
-In short, attacks are migrating towards the currently easier targets, which no longer necessarily include direct attacks on traffic flows. In addition, information about users and ability to influence, often without their permission, has become a common practice for many Internet services.
+In short, attacks are migrating towards the currently easier targets, which no longer necessarily include direct attacks on traffic flows. In addition, trading information about users and ability to influence them has become a common practice for many Internet services, often without consent of the users.
 
-This memo suggests that the existing threat model, while important and still valid, is no longer alone sufficient to cater for the pressing security issues in the Internet. For instance, while it continues to be very important to protect Internet communications against outsiders, it is also necessary to protect the communications against endpoints that are compromised, malicous, or whose interests simply do not align with the interests of the users.
+This memo suggests that the existing threat model, while important and still valid, is no longer alone sufficient to cater for the pressing security issues in the Internet. For instance, while it continues to be very important to protect Internet communications against outsiders, it is also necessary to protect systems against endpoints that are compromised, malicious, or whose interests simply do not align with the interests of the users.
 
-Of course, there are many trade-offs in the Internet on who one chooses to interact with and why or how. It is not the role of this memo to dictate those choices. But it is important that we understand the implications of different practices. It is also important that when it comes to basic Internet infrastructure, our technology choices favour minimal exposure towards the non-communications threats.
+Of course, there are many trade-offs in the Internet on who one chooses to interact with and why or how. It is not the role of this memo to dictate those choices. But it is important that we understand the implications of different practices. It is also important that when it comes to basic Internet infrastructure, our chosen technologies lead to minimal exposure with respect to the non-communications threats.
 
-It is particularly important to ensure that non-communications security related threats are properly understood for any new Internet technology. This memo updates RFC 3552 and RFC 7258 to include proper consideration of non-communications security threats.
+It is particularly important to ensure that non-communications security related threats are properly understood for any new Internet technology. While the consideration of these issues is relatively new in the IETF, this memo provides some initial ideas about potential broader threat models to consider when designing protocols for the Internet or when trying to defend against pervasive monitoring. Further down the road, updated threat models could result in changes in BCP 72 {{RFC3552}} (guidelines for writing security considerations) and BCP 188 {{RFC7258}} (pervasive monitoring), to include proper consideration of non-communications security threats.
 
-The rest of this memo is organized as follows. {{commsec}} and {{beyondcommsec}} outline the situation with respect to communications security or beyond it. {{reale2e}} discusses how the author believes the Internet threat model should evolve, and what types of threats should be seen as critical ones and in-scope. {{guidelines}} will also discuss high-level guidance to addressing these threats.
+It may also be necessary to have dedicated guidance on how systems design and architecture affects security. The sole consideration of communications security aspects in designing Internet protocols may lead to accidental or increased impact of security issues elsewhere. For instance, allowing a participant to unnecessarily collect or receive information may be lead to a similar effect as described in {{RFC8546}} for protocols: over time, unnecessary information will get used with all the associated downsides, regardless of what deployment expectations there were during protocol design. 
 
-{{changes3552}} and {{changes7258}} outline the author's suggested changes to RFC 3552 and RFC 7258. Finally, {{otherwork}} highlights other discussions in this problem space and {{concl}} draws some conclusions for next steps.
+The rest of this memo is organized as follows. {{commsec}} and {{beyondcommsec}} outline the situation with respect to communications security and beyond it. {{reale2e}} discusses how the author believes the Internet threat model should evolve, and what types of threats should be seen as critical ones and in-scope. {{guidelines}} will also discuss high-level guidance to addressing these threats.
+
+{{changes}} outlines the author's suggested future changes to RFC 3552 and RFC 7258 and the need for guidance on the impacts of system design and architecture on security. Comments are solicited on these and other aspects of this document. The best place for discussion is on the arch-discuss list (https://www.ietf.org/mailman/listinfo/Architecture-discuss). This memo acts also as an input for the IAB retreat discussion on threat models, and it is a submission for the IAB DEDR workshop (https://www.iab.org/activities/workshops/dedr-workshop/).
+
+Finally, {{otherwork}} highlights other discussions in this problem space and {{concl}} draws some conclusions for next steps.
 
 # Improvements in Communications Security {#commsec}
 
 The fraction of Internet traffic that is cryptographically protected has grown tremendously in the last few years. Several factors have contributed to this change, from Snowden revelations to business reasons and to better available technology such as HTTP/2 {{RFC7540}}, TLS 1.3 {{RFC8446}}, QUIC {{I-D.ietf-quic-transport}}.
 
-In many networks, the majority of traffic has flipped from cleartext to encrypted. Reaching the level of (almost) all traffic being encrypted is now longer unthinkable but rather a likely outcome in a few years.
+In many networks, the majority of traffic has flipped from being cleartext to being encrypted. Reaching the level of (almost) all traffic being encrypted is no longer something unthinkable but rather a likely outcome in a few years.
 
-At the same time, technology developments and policy choices have driven the scope of cryptographic protection from protecting only the pure payload to protecting much of the rest, including far more header and meta-data information than was protected before. For instance, efforts are ongoing in the IETF to assist encrypting transport headers {{I-D.ietf-quic-transport}}, server domain name information in TLS {{I-D.ietf-tls-esni}}, and domain name queries {{RFC8484}}.
+At the same time, technology developments and policy choices have driven the scope of cryptographic protection from protecting only the pure payload to protecting much of the rest as well, including far more header and meta-data information than was protected before. For instance, efforts are ongoing in the IETF to assist encrypting transport headers {{I-D.ietf-quic-transport}}, server domain name information in TLS {{I-D.ietf-tls-esni}}, and domain name queries {{RFC8484}}.
 
-The have also been improvements to ensure that the security protocols that are in use actually have suitable credentials and that those credentials have not been compromised, see for instance, HSTS {{RFC6797}}, HPKP {{RFC7469}}, Expect-CT {{I-D.ietf-httpbis-expect-ct}}, and Let's Encrypt {{RFC8555}}.
+There has also been improvements to ensure that the security protocols that are in use actually have suitable credentials and that those credentials have not been compromised, see, for instance, Let's Encrypt {{RFC8555}}, HSTS {{RFC6797}}, HPKP {{RFC7469}}, and Expect-CT {{I-D.ietf-httpbis-expect-ct}}.
 
-This is not to say that all problems in communications security have been resolved -- far from it. But the situation is definitely different from what it was a few years ago. Remaining issues will be and are worked on; the fight between defence and attack will also continue. Communications security will stay at the top of the agenda in any Internet technology development.
+This is not to say that all problems in communications security have been resolved -- far from it. But the situation is definitely different from what it was a few years ago. Remaining issues will be and are worked on; the fight between defense and attack will also continue. Communications security will stay at the top of the agenda in any Internet technology development.
 
 # Issues in Security Beyond Communications Security {#beyondcommsec}
 
-There are, however, significant issues beyond communications security in the Internet. To begin with, it is no longer necessarily clear that one can trust all the endpoints. Users may not be in as much control over their own devices as they used to be. Perhaps more obviously, the pattern of communications in today's Internet is almost always via a third party that has at least as much information than the other parties have. For instance, these third parties are typically endpoints for any transport layer security connections. With the exception of some messaging applications, the third parties also see the cleartext communications.
+There are, however, significant issues beyond communications security in the Internet. To begin with, it is not necessarily clear that one can trust all the endpoints. They were never trusted, but the pressures against endpoints issues seem to be mounting. For instance, the users may not be in as much control over their own devices as they used to be. But more importantly, the pattern of communications in today's Internet is almost always via a third party that has at least as much information than the other parties have. For instance, these third parties are typically endpoints for any transport layer security connections, and able to see any communications or other messaging in cleartextx. There are some exceptions, of course, e.g., messaging applications with end-to-end protection.
 
-With the growth of trading users' information by many of these third parties, it becomes necessary to take precautions against endpoints that are compromised, malicous, or whose interests simply do not align with the interests of the users.
+With the growth of trading users' information by many of these third parties, it becomes necessary to take precautions against endpoints that are compromised, malicious, or whose interests simply do not align with the interests of the users.
 
 Specifically, the following issues need attention:
 
 * Security of users' devices and the ability of the user to control their own equipment.
+
+* Leaks and attacks related to data at rest.
 
 * Coercion of some endpoints to reveal information to authorities or surveillance organizations, sometimes even in an extra-territorial fashion.
 
@@ -130,11 +138,13 @@ For instance, while e-mail transport security {{RFC7817}} has become much more w
 
  Domain Name System (DNS) shows signs of ageing but due to the legacy of deployed systems, has changed very slowly. Newer technology {{RFC8484}} developed at the IETF enables DNS queries to be performed confidentially, but its deployment is happening mostly in browsers that use global DNS resolver services, such as Cloudflare's 1.1.1.1 or Google's 8.8.8.8. This results in faster evolution and better security for end users.
 
-However, if one steps back and considers the overall security effects of these developments, the resulting effects can be different. While the security of the actual protocol exchanges improves with the introduction of this new technology, at the same time this implies a move from using a worldwide distributed set of DNS resolvers into more centralised global resolvers. While these resolvers are very well maintained (and a great service), they are potentiall high-value targets for pervasive monitoring and Denial-of-Service (DoS) attacks. In 2016, for example, DoS attacks were launched against Dyn, one of the largest DNS providers, leading to some outages. It is difficult to imagine that DNS resolvers wouldn't be a target in many future attacks or pervasive monitoring projects.
+However, if one steps back and considers the overall security effects of these developments, the resulting effects can be different. While the security of the actual protocol exchanges improves with the introduction of this new technology, at the same time this implies a move from using a worldwide distributed set of DNS resolvers into more centralised global resolvers. While these resolvers are very well maintained (and a great service), they are potential high-value targets for pervasive monitoring and Denial-of-Service (DoS) attacks. In 2016, for example, DoS attacks were launched against Dyn, one of the largest DNS providers, leading to some outages. It is difficult to imagine that DNS resolvers wouldn't be a target in many future attacks or pervasive monitoring projects.
 
 Unfortunately, there is little that even large service providers can do to refuse authority-sanctioned pervasive monitoring. As a result it seems that the only reasonable course of defense is to ensure that no such information or control point exists.
 
-# The Real End-to-end Argument {#reale2e}
+Similarly, many recent attacks relate more to information than communications. For instance, personal information leaks typically happen via information stored on a compromised server rather than capturing communications. There is little hope that such attacks can be prevented entirely. Again, the best course of action seems to be avoid the disclosure of information in the first place, or at least to not perform that in a manner that makes it possible that others can readily use the information.
+
+# The Role of End-to-end {#reale2e}
 
 {{RFC1958}} notes that "end-to-end functions can best be realised by end-to-end protocols":
 
@@ -161,7 +171,11 @@ The end-to-end model supports permissionless innovation where new innovation can
 
 But the details matter. What is considered an endpoint? What characteristics of Internet are we trying to optimize? This memo makes the argument that, for security purposes, there is a significant distinction between actual endpoints from a user's interaction perspective (e.g., another user) and from a system perspective (e.g., a third party relaying a message).
 
-This memo proposes the "real end-to-end argument" to guide the development of protocols meant for interaction among two "real ends" as opposed to, say, two endpoints of components in a larger system. For instance, a transport connection between two components of a system is not an end-to-end connection even if it encompasses all the protocol layers up to the application layer. It is not end-to-end, if the information or control function it carries actually extends beyond those components. For instance, just because an e-mail server can read the contents of an e-mail message does not make it a legitimate recipient of the e-mail.
+This memo proposes to focus on the distinction between "real ends" and other endpoints to guide the development of protocols. A conversation between one "real end" to another "real end" has necessarily different security needs than a conversation between, say, one of the "real ends" and a component in a larger system.
+
+For instance, a transport connection between two components of a system is not an end-to-end connection even if it encompasses all the protocol layers up to the application layer. It is not end-to-end, if the information or control function it carries actually extends beyond those components. For instance, just because an e-mail server can read the contents of an e-mail message does not make it a legitimate recipient of the e-mail.
+
+This memo also proposes to focus on the "need to know" aspect in systems. Information should not be disclosed, stored, or routed in cleartext through parties that do not absolutely need to have that information. 
 
 The proposed real end-to-end argument is as follows:
 
@@ -191,9 +205,11 @@ To be more specific, this memo suggests the following guidelines for protocol de
 
 4. Protocol and network design should avoid the creation of centralized resources or control points.
 
-# Changes in RFC 3552 {#changes3552}
+# Potential Changes in IETF Analysis of Protocols {#changes}
 
-This memo suggestes that the following additional change be adopted in RFC 3552:
+## Changes in RFC 3552 {#changes3552}
+
+This memo suggests that the following additional change be adopted in RFC 3552:
 
 OLD:
 
@@ -222,12 +238,12 @@ NEW:
 
 > In this attack, the other endpoints in the protocol become
 > compromised. As a result, they can, for instance, misuse any
-> information that the end-system implemeting a protocol has sent to the
+> information that the end-system implementing a protocol has sent to the
 > compromised endpoint.
 
-# Changes in RFC 7258 {#changes7258}
+## Changes in RFC 7258 {#changes7258}
 
-This memo suggestes that the following additional guideline be adopted in RFC 7258. This new text should be added after the 2nd paragraph in Section 2:
+This memo suggests that the following additional guideline be adopted in RFC 7258. This new text should be added after the 2nd paragraph in Section 2:
 
 NEW:
 
@@ -237,14 +253,22 @@ NEW:
 > architecture results in centralized data storage or control functions
 > relating to many users, raising the risk of said misuse.
 
+## System and Architecture Aspects
+
+TBD...
+
 # Other Work {#otherwork}
 
-To be filled in...
+To be filled in... see for instance {{I-D.farrell-etm}},
 
 # Conclusions {#concl}
 
-To be filled in...
+More work is needed in this area. To start with, Internet technology developers need to be better aware of the issues beyond communications security, and consider them in design. At the IETF it would be beneficial to include some of these considerations in the usual systematic security analysis of technologies under development.
+
+In particular, as the IETF develops infrastructure technology for the Internet (such as routing or naming systems), considering the impacts of data generated by those technologies is important. Minimising data collection from users, minimising the parties who get exposed to user data, and protecting data that is relayed or stored in systems should be a priority.
+
+Comments on the issues discussed in this memo are gladly taken either privately or on the architecture-discuss mailing list.
 
 # Acknowledgements
 
-The author would like to thank John Mattsson, Mirja Kuehlewind, Alissa Cooper, Stephen Farrell, Eric Rescorla, Simone Ferlin, Kathleen Moriarty, Brian Trammell, Mark Nottingham, Christian Huitema, Karl Norrman, Ted Hardie, and the IAB for interesting discussions in this problem space.
+The author would like to thank John Mattsson, Mirja Kuehlewind, Alissa Cooper, Stephen Farrell, Eric Rescorla, Simone Ferlin, Kathleen Moriarty, Brian Trammell, Mark Nottingham, Christian Huitema, Karl Norrman, Ted Hardie, Phillip Hallam-Baker and the IAB for interesting discussions in this problem space.
