@@ -2,7 +2,7 @@
 *.pdf
 *.redxml
 *.swp
-*.txt
+*[a-z].txt
 *.upload
 *~
 .DS_Store
